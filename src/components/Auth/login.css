@@ -1,0 +1,10 @@
+.formCenter {
+    width: 30%;
+    display: block;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.text-error {
+    color: red;
+}

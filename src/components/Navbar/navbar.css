@@ -1,0 +1,14 @@
+.image {
+    height: 60px;
+}
+.card-category {
+    border: 1px solid black;
+    border-radius: 8px;
+    font-family: Times New Roman;height:35px
+}
+.text-category {
+    margin-top: -12px;
+}
+.text-color {
+    color: black;
+}
