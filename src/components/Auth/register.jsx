@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import './login.css';
-import Login from './Login';
 class Register extends Component {
     state = {
         email: '',

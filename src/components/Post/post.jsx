@@ -11,7 +11,7 @@ class Post extends Component {
         return ( 
             <Card className='post card'>
                 <Card.Body>
-                    <b><Nav.Link className="user" href={"/users/" + post.user.id}>{post.user.email}</Nav.Link></b>
+                    <b><Nav.Link className="user" href={"/userdetail/" + post.user.id}>{post.user.email}</Nav.Link></b>
                     <h6>{post.title}</h6>
                     <pre>{post.content}</pre>
                     <div className="font-date"><b>Create at: </b>{post.createDate}</div>

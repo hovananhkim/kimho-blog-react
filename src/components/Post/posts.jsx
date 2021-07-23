@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Post from './Post';
-import User from '../models/User'
+import Post from './post';
 class Posts extends Component {
     constructor (props) {
         super(props);
@@ -21,8 +20,6 @@ class Posts extends Component {
             }) 
     }
     render() {
-      const user = new User();
-      console.log(user.getUser());
       var {posts} = this.state;
         return ( 
             <div>

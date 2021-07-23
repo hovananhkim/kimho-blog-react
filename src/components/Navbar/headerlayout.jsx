@@ -22,7 +22,7 @@ class HeaderLayout extends Component {
                 items: result
               });
             })
-      }
+    }
     
     render() { 
         var {items} = this.state;
@@ -46,7 +46,7 @@ class HeaderLayout extends Component {
                         </li>
                         {items.map(item => (
                             <li class="nav-item active" >
-                                <a class="nav-link  text-color" href={"/categories/"+item.id}>{item.name.toUpperCase()}</a>
+                                <a class="nav-link  text-color" href={"/category/"+item.id}>{item.name.toUpperCase()}</a>
                             </li>
                         ))}
                         {localStorage.token && 

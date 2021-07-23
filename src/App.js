@@ -1,7 +1,7 @@
 import Layout from 'antd/lib/layout/layout';
 import './App.css';
-import ContentLayout from './components/Body/ContentLayout';
-import HeaderLayout from './components/Navbar/HederLayout';
+import ContentLayout from './components/Body/contentlayout';
+import HeaderLayout from './components/Navbar/headerlayout';
 function App() {
   return (
     <div className="App">

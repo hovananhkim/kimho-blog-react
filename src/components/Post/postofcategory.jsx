@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Post from './Post';
+import Post from './post';
 class PostOfCategory extends Component {
     constructor (props) {
         super(props);

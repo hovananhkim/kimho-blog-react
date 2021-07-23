@@ -10,6 +10,11 @@ class PostManager extends Component {
         const id = event.target.value;
         this.userDeletePostFetch(id);  
     }
+    handleUpdate = event => {
+        let post  = event.target.value;
+        
+    }
+    
     userDeletePostFetch = id => {
         fetch("http://localhost:8080/api/posts/"+id, {
             method: "DELETE",
@@ -28,13 +33,12 @@ class PostManager extends Component {
                 <Card.Body>
                     <div className="row">
                         <div className="col-sm-10">
-                        {post.user && <b><Nav.Link className="user" href={"/users/" + post.user.id}>{post.user.email}</Nav.Link></b>}
                             <h6>{post.title}</h6>
                             <pre>{post.content}</pre>
                         <div className="font-date"><b>Create at: </b>{post.createDate}</div>
                         </div> 
                         <div className="col-sm-1">
-                            <Button onClick={this.updateHandle} value={post.id} className="btn btn-warning">Edit</Button>
+                            <Button href={'/post/'+post.id} value={post} className="btn btn-warning">Edit</Button>
                         </div>
                         <div className="col-sm-1">
                             <Button onClick={this.handleDelete} value={post.id} className="btn btn-danger">Delete</Button>
