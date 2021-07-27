@@ -8,24 +8,33 @@ class HeaderLayout extends Component {
         super(props);
         this.state = {
             isLoader: false,
-            items: []
+            items: [],
         };
     }
 
     componentDidMount() {
+        
         fetch("http://localhost:8080/api/categories")
           .then(res => res.json())
           .then(
             (result) => {
               this.setState({
                 isLoaded: true,
-                items: result
+                items: result,
               });
             })
     }
     
     render() { 
-        var {items} = this.state;
+        var isAdmin=false;
+        if (localStorage.token){
+            const base64Url = localStorage.token.split('.')[1];
+            const base64 = base64Url.replace('-', '+').replace('_', '/');
+            const userFromToken =  JSON.parse(window.atob(base64));
+            isAdmin= userFromToken.scopes==="ROLE_ADMIN,ROLE_USER";
+        }   
+
+        var items = this.state.items.slice(0,10);
         return (  
             <Container>
                 <Nav className="navbar navbar-expand-sm navbar-light">
@@ -44,14 +53,34 @@ class HeaderLayout extends Component {
                         <li class="nav-item active" >
                         <a class="nav-link text-color" href="/">HOME</a>
                         </li>
-                        {items.map(item => (
-                            <li class="nav-item active" >
-                                <a class="nav-link  text-color" href={"/category/"+item.id}>{item.name.toUpperCase()}</a>
-                            </li>
+                        {!localStorage.token && items.map(item => (
+                        <li class="nav-item active" >
+                            <a class="nav-link  text-color" href={"/categories/"+item.id}>{item.name.toUpperCase()}</a>
+                        </li>
                         ))}
+                        { isAdmin && 
+                            <li class="nav-item active" >
+                            <a class="nav-link  text-color" href='/admin/categories'>CATEGORY MANAGEMET</a>
+                            </li>
+                        }
+                        { isAdmin && 
+                            <li class="nav-item active" >
+                            <a class="nav-link  text-color" href='/admin/posts'>POST MANAGEMET</a>
+                            </li>
+                        }
+                        { (!isAdmin &&  localStorage.token) &&
+                            <li class="nav-item active" >
+                            <a class="nav-link  text-color" href='/user/posts'>POST MANAGEMET</a>
+                            </li>
+                        }
+                        { isAdmin && 
+                            <li class="nav-item active" >
+                            <a class="nav-link  text-color" href='/admin/users'>USER MANAGEMENT</a>
+                            </li>
+                        }
                         {localStorage.token && 
                         <li class="nav-item active" >
-                                <a class="nav-link  text-color" href={"/user"}>USER MANAGER</a>
+                                <a class="nav-link  text-color" href={"/profile"}>PROFILE</a>
                         </li>}
                     </ul>
                     </div>

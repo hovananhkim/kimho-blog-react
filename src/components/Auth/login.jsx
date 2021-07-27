@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
 import './login.css'
 import { Form, Button } from 'react-bootstrap';
+import Profile from '../User/profile'
 class Login extends Component {
     state = {
       email: '',
@@ -30,10 +31,21 @@ class Login extends Component {
           .then(data => {
             if(data.token){
               localStorage.setItem('token', data.token);
-              this.props.history.push('/user');
+              this.props.history.push('/profile');
+              window.location.reload();
             }else {
-              this.setState({
-                message: 'Incorrect email or password'
+              if (!this.state.email){
+                this.setState({
+                  message: 'Email is empty!'
+                })
+              }
+              if (!this.state.password){
+                this.setState({
+                  message: 'Password is empty!'
+                })
+              }else
+                this.setState({
+                message: 'Incorrect email or password!'
               })
             }
           })       
@@ -64,11 +76,8 @@ class Login extends Component {
               onChange={this.handleChange} 
               placeholder="Password" />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-          </Form.Group>
-          <Button onClick={this.handleSubmit}  variant="primary" type="submit">
-            Submit
+          <Button className='button-add' onClick={this.handleSubmit}  variant="primary" type="submit">
+            Login
           </Button>
         </Form>
         </div>

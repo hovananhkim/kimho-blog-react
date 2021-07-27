@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, NavLink, Table } from 'react-bootstrap';
 import '../Post/post.css';
 import './user.css';
 import avatar from './avatar.png';
@@ -28,6 +28,7 @@ class UserDetail extends Component {
     render() { 
         var user = this.state.user;
         var posts = this.state.posts;
+        console.log(posts);
         return ( 
             <div >
                 <div className="card-user">
@@ -36,15 +37,25 @@ class UserDetail extends Component {
                 <div>{user.firstname} {user.lastname}</div>
                 </div>
                 <div>
-                {posts.map(post => (
-                <Card className='post'>
-                <Card.Body>
-                      <h6>{post.title}</h6>
-                      <pre>{post.content}</pre>
-                      <div className="font-date"><b>Create at: </b>{post.createDate}</div>
-                    </Card.Body>
-                </Card>
-                ))}
+                <Table striped bordered hover>
+                <thead>
+                    <tr>
+                    <th style= {{width:'40px'}}>Id</th>
+                    <th>Title</th>
+                    <th style= {{width:'80px'}}>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {posts.map(post => (
+                    <tr>
+                        
+                        {post.isActive&& <td>{post.id}</td>}
+                        {post.isActive&& <td><NavLink href={'/posts/'+post.id}>{post.title}</NavLink></td>}
+                        {post.isActive&& <td>Active</td>}
+                    </tr>
+                    ))}     
+                </tbody>
+                </Table>
                 </div>
             </div>
         );

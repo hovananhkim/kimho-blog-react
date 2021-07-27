@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import ReactJsAlert from "reactjs-alert"
 import './login.css';
 class Register extends Component {
     state = {
@@ -7,6 +8,7 @@ class Register extends Component {
         firstname: '',
         lastname: '',
         password: '',
+        success: false,
         message: ''
       }
     handleSubmit = event => {
@@ -29,15 +31,23 @@ class Register extends Component {
         })
           .then(resp => resp.json())
           .then(data => {
-            console.log(data);
             if(data.email){
-                this.props.history.push('/login');
+                this.setState({
+                  success: true
+                })
+                this.setState({
+                  email: '',
+                  firstname: '',
+                  lastname: '',
+                  password: '',
+                  message: ''
+                })
             }else if(data.status===400){
                 if (!this.state.email){
-                this.setState({message: 'Email must not emty'})
+                this.setState({message: 'Email must not null'})
               }
                 else if (!this.state.password){
-                this.setState({message: 'Password must not emty'})
+                this.setState({message: 'Password must not null'})
               }
                 else this.setState({message: 'Email valid'})
             }
@@ -49,6 +59,11 @@ class Register extends Component {
                 <Form>
                     <h5 className="text-center">Register</h5>
                     <div className="text-error">{this.state.message}</div>
+                    {this.state.success && <ReactJsAlert
+                    status={this.state.success} 
+                    type='success'
+                    title= 'User is created successfullly'
+                    Close={() => this.setState({ success: false })}/>}
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control 
@@ -85,10 +100,7 @@ class Register extends Component {
                         value={this.state.password} 
                         onChange={this.handleChange}/>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                    </Form.Group>
-                    <Button onClick={this.handleSubmit} variant="primary" type="submit">
+                    <Button className='button-add' onClick={this.handleSubmit} variant="primary" type="submit">
                     Submit
                     </Button>
                 </Form>

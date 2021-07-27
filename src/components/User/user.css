@@ -18,3 +18,10 @@
 }.margin {
     margin-bottom: 10px;
 }
+.button-add {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: 0px;
+}

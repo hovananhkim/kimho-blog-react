@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form} from 'react-bootstrap';
+import ReactJsAlert from "reactjs-alert"
 class CategoryForm extends Component {
     state = { 
         name:'',
-        message: '' }
+        message: '',
+        success: false,
+        error: false
+     }
     handleChange = event => {
         this.setState({
           [event.target.name]: event.target.value
@@ -27,16 +31,41 @@ class CategoryForm extends Component {
             .then(resp => resp.json())
             .then(data => {
                 if (data.status===400){
+                    if (!category.name){
+                        this.setState({
+                            message: 'Name must not null!',
+                            error: true
+                        })
+                    }else{
                     this.setState({
-                        message: 'Category is exist'
+                        message: 'Category is exist!',
+                        error: true
+                    })}
+                }else {
+                    this.setState({
+                        success: true
                     })
+                    this.setState({
+                        name:'',
+                        message: '',
+                    }); 
                 }
-          })       
+                })
     }
     render() { 
         return ( 
             <div className='formCenter'>
-                <div className='text-error'>{this.state.message}</div>
+                {this.state.error && 
+                    <ReactJsAlert
+                    status={this.state.error} 
+                    type='error' // success, warning, error, info
+                    title= {this.state.message}
+                    Close={() => this.setState({ error: false })}/>}
+                {this.state.success && <ReactJsAlert
+                    status={this.state.success} 
+                    type='success' // success, warning, error, info
+                    title= 'Category is created successfullly'
+                    Close={() => this.setState({ success: false })}/>}
                 <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Category name</Form.Label>
@@ -48,7 +77,7 @@ class CategoryForm extends Component {
                     placeholder="Enter catogory" />
                 </Form.Group>
                 <Button onClick={this.handleSubmit}  variant="primary" type="submit">
-                    Submit
+                    Add
                 </Button>
                 </Form>
             </div>

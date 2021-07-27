@@ -20,7 +20,9 @@ class Posts extends Component {
             }) 
     }
     render() {
-      var {posts} = this.state;
+      const posts = this.state.posts.sort(function (a, b) {
+        return b.id - a.id;
+      });
         return ( 
             <div>
               {posts.map(post => (

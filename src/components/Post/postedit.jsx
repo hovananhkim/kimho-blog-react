@@ -1,36 +1,54 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
 import { Button, Form } from 'react-bootstrap';
-import ReactJsAlert from "reactjs-alert";
 import Select from 'react-select';
-import { message } from 'antd';
-class PostForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            'categoryId' : 1,
+import ReactJsAlert from "reactjs-alert";
+class PostEdit extends Component {
+    state = { 
+        'categoryId' : 1,
             'title':'',
             'content': '',
             'url': '',
             'tag': '',
-            category: '',
+            category:'',
             categories: [],
             message: '',
             success: false
-        };
     }
-    
     componentDidMount() {
         fetch("http://localhost:8080/api/categories")
+        .then(res => res.json())
+        .then(
+            (result) => {
+            this.setState({
+                categories: result
+            });
+            })
+        const id = this.props.match.params.id;
+        fetch("http://localhost:8080/api/posts/" + id)
           .then(res => res.json())
           .then(
             (result) => {
-              this.setState({
-                categories: result
-              });
-            })
-        
+                if (result.content){
+                    this.setState({
+                        title: result.title,
+                        content: result.content,
+                        isActive: result.isActive,
+                        url: result.url,
+                        tags: result.tags,
+                        user: result.user,
+                        category: {
+                            value: result.category.id,
+                            lable: result.category.name },
+                        categoryId: result.category.id,                       
+                      });
+                    const tag = this.state.tags.map(e=>e.name).join(',');
+                    this.setState({
+                        tag:tag
+                    })
+                }
+            }) 
     }
+    
     handleChange = event => {
         this.setState({
           [event.target.name]: event.target.value
@@ -44,17 +62,18 @@ class PostForm extends Component {
     handleSubmit = event => {
         event.preventDefault()
         const post = {
-            'categoryId' : this.state.category.value,
+            'categoryId': this.state.category.value,
             'title':this.state.title,
             'content': this.state.content,
             'url': this.state.url,
             'tags': this.state.tag.split(',')
         }
-        this.userAddPostFetch(post);        
+        this.userUpdatePostFetch(post);        
     }
-    userAddPostFetch = post => {
-        fetch("http://localhost:8080/api/posts", {
-            method: "POST",
+    userUpdatePostFetch = post => {
+        const id = this.props.match.params.id;
+        fetch("http://localhost:8080/api/posts/"+id, {
+            method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -64,53 +83,42 @@ class PostForm extends Component {
         })
             .then(res => res.json())
             .then(result => {
-                    if (result.content){
-                        this.setState({
-                            success: true
-                        })
-                        this.setState({
-                            'title':'',
-                            'content': '',
-                            'url': '',
-                            'tag': '',
-                            'categoryId':1,
-                            message: '',
-                        })
-                    }
-                    else {
-                        const {category, title, content, tag} = this.state;
-                        var message = !category&&'Category'||!title&&'Title'||!content&&'Content'||!tag&&'Tags';
-                        this.setState({
-                            message: message
-                        })
-                    }
+                if (result.content){
+                    this.setState({success: true})
                 }
-            )
-        
+                else {
+                    const {title, content, tag} = this.state;
+                    var message = !title&&'Title'||!content&&'Content'||!tag&&'Tags';
+                    console.log(message);
+                    this.setState({
+                        message: message
+                    })
+                }
+            });
     }
     render() { 
+        console.log(this.state);
         const categories = this.state.categories;
         const options = [];
         categories.map(category => (
             options.push({ value: category.id, label:category.name})
-        ))
+        ));
         return ( 
-            <div >             
-                {this.state.message&&<div className='text-error'>{this.state.message} must not null!</div>}
+            <div>   
+                {this.state.message&& <div className='text-error'>{this.state.message} must not null!</div>}
                 {this.state.success && <ReactJsAlert
                     status={this.state.success} 
                     type='success' 
                     title= 'Post is created successfullly'
-                    Close={() => this.setState({ success: false })}/>}
+                    Close={() => this.setState({ success: false })}/>}        
                 <Form>
                     <Form.Group className="mb-3">
                     <Form.Label>Category</Form.Label>
                     <Select 
+
                         value={this.state.category}
                         onChange={this.selectChange}
-                        options={options}
-                        placeholder="Select Category"
-                    />
+                        options={options}/>
                     </Form.Group>
                     <Form.Group className="mb-3">
                     <Form.Label>Title</Form.Label>
@@ -156,11 +164,11 @@ class PostForm extends Component {
                         onChange={this.handleChange}
                     />
                     </Form.Group>
-                    <Button onClick={this.handleSubmit} variant="primary" type="submit">Add</Button>
+                    <Button onClick={this.handleSubmit} variant="primary" type="submit">Update</Button>
                 </Form>
             </div>
-        );
+         );
     }
 }
  
-export default PostForm;
+export default PostEdit;

@@ -1,12 +1,42 @@
 .post {
     margin-top: 10px;
+} 
+.text-color {
+    color: black;
 }
-.font-date {
+.card-margin {
+    margin-left: 50px;
+}
+.img-post {
+    width: 100%;
+}
+.resource {
+    position: absolute;
+    left: auto;
+    right: 15px;
+    bottom: 0;
+    width: 200px;
+    height: 65px;
+}
+.author {
+    text-align: right;
+}
+.date {
+    margin-left: 90px;
+    margin-top: -10px;
     font-size: 12px;
-    margin-top: -10px;
 }
-.user {
-    margin-left: -15px;
+.margin-top {
+    margin-top: 20px;
+}
+.date1  {
+    margin-left: 530px;
     margin-top: -10px;
-    margin-bottom: 10px;
-}  
+    font-size: 12px;
+}
+.navlink {
+    margin-left: -20px;
+}
+.link {
+    padding-left: 15px;
+}

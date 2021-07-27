@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Card, Nav } from 'react-bootstrap';
+import { Card, NavLink } from 'react-bootstrap';
 import './post.css';
 class Post extends Component {
     state = {
@@ -9,14 +9,27 @@ class Post extends Component {
     render() { 
         const post = this.state.post;
         return ( 
-            <Card className='post card'>
-                <Card.Body>
-                    <b><Nav.Link className="user" href={"/userdetail/" + post.user.id}>{post.user.email}</Nav.Link></b>
-                    <h6>{post.title}</h6>
-                    <pre>{post.content}</pre>
-                    <div className="font-date"><b>Create at: </b>{post.createDate}</div>
-                </Card.Body>
-            </Card>
+            <NavLink href={'/posts/'+post.id}>
+                {post.isActive && <Card className='post card text-color'>
+                <div className='row card-margin'>
+                    <div className='col-sm-6'>
+                        <img className='img-post' src={post.url}/>
+                    </div>
+                    <div className='col-sm-6'>
+                        <Card.Body>
+                        <Card.Title>{post.title}</Card.Title>
+                        <Card.Text>
+                        {post.content.split('.')[0]}
+                        </Card.Text>
+                        <div className='resource'>
+                            <NavLink className='text-color author' href={'/users/'+post.user.id}>{post.user.email}</NavLink>
+                            <Card.Text className='date'>{post.createDate}</Card.Text>
+                        </div>
+                        </Card.Body>
+                    </div>
+                </div> 
+                </Card>}
+            </NavLink>
         );
     }
 }
